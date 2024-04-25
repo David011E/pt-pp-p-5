@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from products.views import (
     CreateCheckoutSessionView,
     checkout_cancel,
+    StripeWebhookView,
 )
 
 urlpatterns = [
@@ -30,4 +31,5 @@ urlpatterns = [
     path('userprofile/', include('userprofile.urls')),
     path('create-checkout-session/<pk>/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
     path('checkout_cancel/', checkout_cancel.as_view(), name='checkout_cancel'), 
+    path('webhook/stripe/', StripeWebhookView.as_view(), name='stripe-webhook'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

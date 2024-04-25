@@ -5,6 +5,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 from django.views import View
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse, HttpResponse
 
 import stripe
 import sweetify
@@ -78,3 +80,38 @@ class CreateCheckoutSessionView(LoginRequiredMixin, View):
 
 class checkout_cancel(TemplateView):
     template_name = 'products/checkout_cancel.html'
+
+
+class StripeWebhookView(View):
+    @csrf_exempt
+    def dispatch(self, *args, **kwargs):
+        return super(StripeWebhookView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        payload = request.body
+        sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+        endpoint_secret = settings.STRIPE_WEBHOOK_SECRET  # Replace 'whsec_...' with your actual webhook signing secret
+
+        try:
+            event = stripe.Webhook.construct_event(
+                payload, sig_header, endpoint_secret
+            )
+        except ValueError:
+            # Invalid payload
+            return HttpResponse(status=400)
+        except stripe.error.SignatureVerificationError:
+            # Invalid signature
+            return HttpResponse(status=400)
+
+        # Handle the event
+        if event['type'] == 'checkout.session.completed':
+            session = event['data']['object']
+            # Handle the checkout session completion
+            handle_checkout_session(session)
+
+        # Respond to Stripe that the webhook was received
+        return JsonResponse({'status': 'success'})
+    
+def handle_checkout_session(session):
+    # Implement your business logic here
+    print("Checkout session completed with session ID:", session['id'])
