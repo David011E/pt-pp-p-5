@@ -58,7 +58,7 @@
                         </small>
                     {% endif %}
                     <!-- Checkout Button -->
-                    <form id="create-checkout-session" method="POST" action="">
+                    <form id="create-checkout-session" method="POST" action="{% url 'create-checkout-session' product.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary btn-block checkout-button">Checkout</button>
                     </form>
