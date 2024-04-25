@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from .forms import ContactForm
 from .models import Contact 
 
@@ -23,4 +23,34 @@ def contact(request):
     context = {
         'form': form
     }
+    return render(request, template, context)
+
+
+def contact_admin(request):
+    """ Where admin can view messages """
+
+    contacts = Contact.objects.all()
+
+    template = 'contact/contact_admin.html'
+
+    context = {
+        'contact': contacts,
+    }
+    return render(request, template, context)
+
+
+def contact_details(request, contact_id):
+    """
+    A view to show individual contact details
+    """
+
+    # Retrieve a single contact object based on contact_id
+    message = get_object_or_404(Contact, pk=contact_id)
+
+    template = 'contact/contact_details.html'
+
+    context = {
+        'message': message,  # Pass the single contact object to the template
+    }
+
     return render(request, template, context)
