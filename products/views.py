@@ -46,6 +46,14 @@ class CreateCheckoutSessionView(LoginRequiredMixin, View):
                 metadata={'django_user_id': request.user.id}
             )
 
+        # Check if the user is already subscribed to the product using Stripe API
+        if customer:
+            subscriptions = stripe.Subscription.list(customer=customer.id)
+            for subscription in subscriptions.auto_paging_iter():
+                if subscription['status'] == 'active' and subscription['items']['data'][0]['price']['id'] == product.stripe_price_id:
+                    sweetify.error(request, "You are already subscribed to this product.")
+                    return redirect(reverse('checkout_cancel'))
+
         checkout_session = stripe.checkout.Session.create(
             client_reference_id=str(request.user.id),
             payment_method_types=['card'],
