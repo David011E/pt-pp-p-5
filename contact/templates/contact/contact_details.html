@@ -20,7 +20,7 @@
                         <h5 class="card-title">{{ message.name }}</h5>
                         <h6 class="card-subtitle mb-2 text-muted">{{ message.email }}</h6>
                         <p class="card-text">{{ message.description }}</p>
-                        <a href="#" class="btn btn-danger">Delete</a>
+                        <a href="{% url 'delete_message' message.id %}" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
             </div>
