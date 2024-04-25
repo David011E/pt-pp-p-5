@@ -9,6 +9,7 @@ from django.views import View
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse, HttpResponse
+from .forms import ProductForm
 
 import stripe
 import sweetify
@@ -148,3 +149,33 @@ class StripeWebhookView(View):
 def handle_checkout_session(session):
     # Implement your business logic here
     print("Checkout session completed with session ID:", session['id'])
+
+
+def edit_product(request, product_id):
+    """ Edit a product in the store """
+
+    if not request.user.is_superuser:
+        sweetify.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
+    product = get_object_or_404(Product, pk=product_id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            form.save()
+            sweetify.success(request, 'Successfully updated product!')
+            return redirect(reverse('product_details', args=[product.id]))
+        else:
+            sweetify.error(request, 'Failed to update product. Please ensure the form is valid.')
+    else:
+        form = ProductForm(instance=product)
+        sweetify.info(request, f'You are editing {product.name}')
+
+
+    template = 'products/edit_product.html'
+    context = {
+        'form': form,
+        'product': product,
+    }
+
+    return render(request, template, context)
