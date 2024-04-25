@@ -66,7 +66,7 @@ class CreateCheckoutSessionView(LoginRequiredMixin, View):
                 },
             ],
             metadata={"product_id": str(product.id)},
-            success_url=YOUR_DOMAIN + reverse('checkout_success'),
+            success_url=YOUR_DOMAIN + reverse('userprofile'),
             cancel_url=YOUR_DOMAIN + reverse('checkout_cancel'),
             locale='en',
         )
@@ -75,10 +75,6 @@ class CreateCheckoutSessionView(LoginRequiredMixin, View):
 
         return redirect(checkout_url)
     
-
-class checkout_success(TemplateView):
-    template_name = "products/checkout_success.html"
-
 
 class checkout_cancel(TemplateView):
     template_name = 'products/checkout_cancel.html'
