@@ -47,6 +47,20 @@ def all_services(request):
     return render(request, 'products/products.html', context)
 
 
+def product_details(request, product_id):
+    """
+    A view to show individual service details
+    """
+
+    product = get_object_or_404(Product, pk=product_id)  # Retrieve a single service object
+
+    context = {
+        'product': product,  # Pass the single service object to the template
+    }
+
+    return render(request, 'products/product_details.html', context)  
+
+
 class CreateCheckoutSessionView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         product_id = self.kwargs["pk"]
