@@ -51,3 +51,32 @@ def review_details(request, reviews_id):
     }
 
     return render(request, 'result/review_details.html', context)
+
+
+def edit_review(request, reviews_id):
+    """ Edit a review in the store """
+
+    if not request.user.is_superuser:
+        sweetify.error(request, 'Sorry, only store owners can do that.')
+        return redirect(reverse('home'))
+
+    review = get_object_or_404(Review, pk=reviews_id)
+    if request.method == 'POST':
+        form = ReviewForm(request.POST, request.FILES, instance=review)  # Assigning to 'form' here
+        if form.is_valid():  # Changed from 'if form.is_valid():'
+            form.save()
+            sweetify.success(request, 'Successfully updated review!')
+            return redirect(reverse('review_details', args=[review.id]))
+        else:
+            sweetify.error(request, 'Failed to update review. Please ensure the form is valid.')
+    else:
+        form = ReviewForm(instance=review)
+        sweetify.info(request, f'You are editing {review.name}')
+
+    template = 'result/edit_review.html'
+    context = {
+        'form': form,
+        'review': review,
+    }
+
+    return render(request, template, context)
