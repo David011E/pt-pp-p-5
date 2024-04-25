@@ -50,3 +50,35 @@ class UserProfileView(LoginRequiredMixin, View):
 
         # Render the user profile template with the user's subscriptions
         return render(request, 'userprofile/userprofile.html', {'user_subscriptions': user_subscriptions})
+    
+
+class CancelSubscriptionView(LoginRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        # Retrieve the user's primary email address object
+        email_address_object = EmailAddress.objects.filter(user=request.user, primary=True).first()
+        if not email_address_object:
+            sweetify.error(request, "No primary email address found.")
+            return redirect(reverse('userprofile'))  # Redirect as needed
+
+        # Get the actual email string from the email address object
+        email_address = email_address_object.email
+
+        # Retrieve the customer from Stripe using the email address
+        customers = stripe.Customer.list(email=email_address).data
+        if not customers:
+            sweetify.error(request, "No Stripe customer found for the provided email address.")
+            return redirect(reverse('userprofile'))  # Redirect as needed
+
+        customer = customers[0]  # Assume the first customer is the correct one
+
+        # Retrieve subscriptions for the customer
+        subscriptions = stripe.Subscription.list(customer=customer.id)
+        if subscriptions and subscriptions.data:
+            subscription_id = subscriptions.data[0].id  # Assume you want to cancel the first subscription
+            stripe.Subscription.delete(subscription_id)  # Immediately cancel the subscription
+            sweetify.success(request, 'Your subscription was successfully cancelled.')
+        else:
+            sweetify.error(request, "No subscriptions found for this customer.")
+            return redirect(reverse('userprofile'))  # Redirect as needed
+
+        return redirect(reverse('userprofile'))

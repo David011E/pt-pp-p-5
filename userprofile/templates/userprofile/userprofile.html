@@ -32,7 +32,7 @@
                             Status: {{ subscription.status }}
                         </p>
                     </div>
-                    <form method="POST" action="">
+                    <form method="POST" action="{% url 'cancel_subscription' subscription.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-danger btn-block">Cancel Subscription</button>
                     </form>
