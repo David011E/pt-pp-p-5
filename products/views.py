@@ -9,7 +9,7 @@ from django.conf import settings
 import stripe
 import sweetify
 
-stripe.api_key = 'sk_test_51JZTOFFrxPi5qjzP2uFgNT4yGnmANfbRa0Xb2Fc5ismTeFvdi7BoCSk58T9s52NaCsMzrwdgkCKZzXufLisCi3Rv00D6tt8sx4'
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 def all_services(request):
