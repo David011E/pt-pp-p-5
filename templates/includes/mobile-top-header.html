@@ -31,7 +31,7 @@
         {% if request.user.is_authenticated %}
             {% if request.user.is_superuser %}
                 <a href="{% url 'add_product' %}" class="dropdown-item">Product Management</a>
-                <a href="" class="dropdown-item">Review Management</a>
+                <a href="{% url 'add_review' %}" class="dropdown-item">Review Management</a>
                 <a href="" class="dropdown-item">Messages</a>
             {% endif %}
             <a href="{% url 'userprofile' %}" class="dropdown-item">My Profile</a>
