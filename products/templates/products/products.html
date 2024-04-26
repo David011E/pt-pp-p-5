@@ -66,11 +66,15 @@
                         <a class="btn btn-danger pd-page-button" href="{% url 'delete_product' product.id %}">Delete</a>
                         </small>
                     {% endif %}
+                    {% if user.is_authenticated %}
                     <!-- Checkout Button -->
                     <form id="create-checkout-session" method="POST" action="{% url 'create-checkout-session' product.id %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-primary btn-block checkout-button">Checkout</button>
+                        <button type="submit" class="btn btn-primary btn-block checkout-button">Subscribe</button>
                     </form>
+                    {% else %}
+                    <a href="{% url 'account_login' %}" class="btn btn-secondary btn-block">Login to Subscribe</a>
+                    {% endif %}
                 </div>
             </div>
             {% if forloop.counter|divisibleby:1 %}
