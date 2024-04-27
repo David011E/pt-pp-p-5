@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', '')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['pt-pp-p-5-acaa98cb0828.herokuapp.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['pt-pp-p-5-acaa98cb0828.herokuapp.com', 'localhost', '127.0.0.1', '8000-david011e-ptppp5-dfkudapdd6s.ws-eu110.gitpod.io']
 
 
 # Application definition
@@ -99,7 +99,7 @@ AUTHENTICATION_BACKENDS = (
 
 SITE_ID = 1 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
 ACCOUNT_EMAIL_REQUIRED = True
