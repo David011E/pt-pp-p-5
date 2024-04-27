@@ -67,7 +67,7 @@ class CreateCheckoutSessionView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         product_id = self.kwargs["pk"]
         product = get_object_or_404(Product, id=product_id)
-        YOUR_DOMAIN = "http://localhost:8000/"
+        YOUR_DOMAIN = "https://pt-pp-p-5-acaa98cb0828.herokuapp.com/"
 
         if not request.user.is_authenticated:
             return sweetify("User must be authenticated to initiate checkout.", status=403)
