@@ -420,6 +420,10 @@ body {
     text-align: center; /* ensure text is centered if flex properties fail */
   }
 
+  .copyright {
+    margin-top: 10px;
+  }
+  
 /* -------------------------------- Media Queries */
 
 /* Slightly larger container on xl screens */
