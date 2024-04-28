@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import handler404
 from products.views import (
     CreateCheckoutSessionView,
     checkout_cancel,
@@ -35,4 +36,5 @@ urlpatterns = [
     path('create-checkout-session/<pk>/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
     path('checkout_cancel/', checkout_cancel.as_view(), name='checkout_cancel'), 
     path('webhook/stripe/', StripeWebhookView.as_view(), name='stripe-webhook'),
+    path('handler404/', handler404),  # Use the handler404 view directly
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
