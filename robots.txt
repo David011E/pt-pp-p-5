@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /userprofile/
+Sitemap: https://pt-pp-p-5-acaa98cb0828.herokuapp.com/sitemap.xml
