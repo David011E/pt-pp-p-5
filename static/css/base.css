@@ -399,6 +399,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     background-color: #111010;
     color: #fff; 
     padding: 1rem 0;
@@ -409,6 +410,14 @@ body {
     width: 100%;
     box-shadow: 0 -2px 4px rgba(0,0,0,0.2);
     border-top: 3px solid #f7b731; 
+  }
+
+  .footer .container {
+    display: flex;
+    flex-direction: column; /* stack children vertically */
+    justify-content: center; /* center children horizontally */
+    align-items: center; /* center children vertically */
+    text-align: center; /* ensure text is centered if flex properties fail */
   }
 
 /* -------------------------------- Media Queries */
