@@ -51,7 +51,12 @@ Python Files Tested:
 
 ___
 
-___
+## Javascript Error
+
+I've been getting this javascript error after I implemented Stripe.
+
+![Javascript Error](media/Error.png)
+
 
 ## ADMIN
 
