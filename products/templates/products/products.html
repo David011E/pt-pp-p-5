@@ -73,7 +73,11 @@
                     <!-- Checkout Button -->
                     <form id="create-checkout-session" method="POST" action="{% url 'create-checkout-session' product.id %}">
                         {% csrf_token %}
+                        {% if user.is_superuser %}
+            
+                        {% else %}
                         <button type="submit" class="btn btn-primary btn-block checkout-button">Subscribe</button>
+                        {% endif %}
                     </form>
                     {% else %}
                     <a href="{% url 'account_login' %}" class="btn btn-secondary btn-block">Login to Subscribe</a>
