@@ -18,35 +18,52 @@ import sweetify
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
-def all_services(request):
-
-    products = Product.objects.all()
-
-    query = None
-    categories = None
-
-    if request.GET:
+class AllServicesView(View):
+    def get(self, request, *args, **kwargs):
+        # Retrieve all products
+        products = Product.objects.all()
+        
+        categories = None
+        query = None
+        
         if 'category' in request.GET:
             categories = request.GET['category'].split(',')
             products = products.filter(category__name__in=categories)
             categories = Category.objects.filter(name__in=categories)
 
-        if 'q' in request.GET:
-            query = request.GET['q']
-            if not query:
-                sweetify.error(request, "You didn't enter any search criteria!")
-                return redirect(reverse('all_services'))
-
-            
+        if query:
             queries = Q(name__icontains=query) | Q(description__icontains=query) | Q(category__name__icontains=query)
             products = products.filter(queries)
-    
-    context = {
-        "products": products,
-        'search_term': query,
-        'current_categories': categories,
-    }
-    return render(request, 'products/products.html', context)
+            if not products.exists():
+                messages.error(request, "No products found matching your criteria!")
+                return redirect('all_services')
+        
+         # Initialize subscribed products list
+        subscribed_product_names = []
+        if request.user.is_authenticated:
+            # Attempt to retrieve the Stripe customer
+            stripe_customer = stripe.Customer.list(email=request.user.email).data
+            if stripe_customer:
+                customer_id = stripe_customer[0].id
+                subscriptions = stripe.Subscription.list(customer=customer_id)
+                for subscription in subscriptions.auto_paging_iter():
+                    price_id = subscription['items']['data'][0]['price']['id']
+                    price = stripe.Price.retrieve(price_id)
+                    product = stripe.Product.retrieve(price.product)
+                    subscribed_product_names.append(product.name)
+
+        # Check each product to see if it matches any subscribed product names
+        for product in products:
+            product.is_subscribed = product.name in subscribed_product_names
+
+        context = {
+            'products': products,
+            'search_term': query,
+            'current_categories': categories,
+            'subscribed_product_names': subscribed_product_names,
+        }
+        
+        return render(request, 'products/products.html', context)
 
 
 def product_details(request, product_id):
