@@ -239,3 +239,18 @@ def delete_product(request, product_id):
     product.delete()
     sweetify.success(request, 'Product deleted!')
     return redirect(reverse('products'))
+
+
+
+def cancellation_policy(request, product_id):
+    """
+    A view to show individual service details
+    """
+
+    product = get_object_or_404(Product, pk=product_id)  # Retrieve a single service object
+
+    context = {
+        'product': product,  # Pass the single service object to the template
+    }
+
+    return render(request, 'products/cancellation_policy.html', context)  
