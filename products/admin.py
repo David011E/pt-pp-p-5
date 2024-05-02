@@ -6,10 +6,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = (
         'name',
         'category',
-        'description',
         'price',
         'stripe_price_id',
         'image',
+        'recurrence',
+        'duration',
+        'cancellation_policy',
     )
 
 class CategoryAdmin(admin.ModelAdmin):
