@@ -423,6 +423,10 @@ body {
   .copyright {
     margin-top: 10px;
   }
+
+  .fas {
+    margin-right: 7px;
+  }
   
 /* -------------------------------- Media Queries */
 
