@@ -385,3 +385,8 @@ I then went to create a database to connect to the new created app.
 
 * [Stack overflow](https://stackoverflow.com/)
 
+### Acknowledgement and support
+
+* My Mentor Jubril Akolade sharp,straight and honest feedback and pointed out all the small details that would help me to improve.
+
+* I would love to thank Code institute and their amazing team tutors support for this project that helped me alot when I needed the help.
