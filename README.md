@@ -8,7 +8,7 @@ PT JACKATTACK is a fictional B2C e-commerce store that is designed and implement
 
 Portfolio 5 project as part of the Diploma in Full Stack Software Development by Code Institute.
 
-Link to deployed site can be found Due to Changing Heroku account this link is available at the moment
+Link to deployed site can be found. Due to Changing Heroku account this link is available at the moment
 
 ----
 ### PT JACKATTACK
